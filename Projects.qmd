@@ -1,0 +1,31 @@
+---
+title: "Project291"
+format: html
+---
+
+```{r}
+library(readr)
+library(janitor)
+library(dplyr)
+library(performance)
+library(patchwork)
+library(see)
+library(ggplot2)
+```
+
+```{r}
+Life_Expectancy <- read_csv("~/Downloads/Life_Expectancy_00_15.csv")
+View(Life_Expectancy)
+Life<-clean_names(Life_Expectancy)
+Life<-Life|>filter(year==2015)
+```
+
+
+```{r}
+regression1<-lm(data=Life,life_expectancy~gdp_per_capita+health_expenditure)
+summary(regression1)
+
+check_model(regression1, check = c("ncv","homogeneity","qq"))
+```
+
+
