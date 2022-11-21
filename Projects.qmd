@@ -19,7 +19,6 @@ Life_Expectancy <- read_csv(here("Life_Expectancy_00_15.csv"))
 View(Life_Expectancy)
 Life<-clean_names(Life_Expectancy)
 Life<-Life|>filter(year==2015)
-# hahaha
 ```
 
 
