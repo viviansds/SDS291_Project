@@ -11,10 +11,11 @@ library(performance)
 library(patchwork)
 library(see)
 library(ggplot2)
+library(here)
 ```
 
 ```{r}
-Life_Expectancy <- read_csv("~/Downloads/Life_Expectancy_00_15.csv")
+Life_Expectancy <- read_csv(here("Life_Expectancy_00_15.csv"))
 View(Life_Expectancy)
 Life<-clean_names(Life_Expectancy)
 Life<-Life|>filter(year==2015)
