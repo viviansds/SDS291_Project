@@ -12,21 +12,83 @@ library(patchwork)
 library(see)
 library(ggplot2)
 library(here)
+library(car)
 ```
 
 ```{r}
 Life_Expectancy <- read_csv(here("Life_Expectancy_00_15.csv"))
-View(Life_Expectancy)
 Life<-clean_names(Life_Expectancy)
 Life<-Life|>filter(year==2015)
 ```
 
 
 ```{r}
-regression1<-lm(data=Life,life_expectancy~gdp_per_capita+health_expenditure)
+regression1<-lm(data=Life,life_expectancy~gdp_per_capita+health_expenditure+least_developed+continent+people_practicing_open_defecation+people_using_at_least_basic_drinking_water_services)
 summary(regression1)
 
 check_model(regression1, check = c("ncv","homogeneity","qq"))
 ```
 
+```{r}
+regression2<-lm(data=Life,life_expectancy~people_using_at_least_basic_drinking_water_services)
+summary(regression2)
+
+```
+
+```{r}
+regression3<-lm(data=Life,life_expectancy~gdp_per_capita+health_expenditure+least_developed+continent+people_practicing_open_defecation+people_using_at_least_basic_drinking_water_services+population+co2_emissions+electric_power_consumption+forest_area+individuals_using_the_internet+military_expenditure+obesity_among_adults+beer_consumption_per_capita)
+summary(regression3)
+
+anova(regression1,regression3)
+
+regression4<-lm(data=Life,life_expectancy~gdp_per_capita+least_developed+continent+people_using_at_least_basic_drinking_water_services+co2_emissions+individuals_using_the_internet+military_expenditure+beer_consumption_per_capita)
+summary(regression4)
+
+anova(regression4,regression3)
+
+regression5<-lm(data=Life,life_expectancy~gdp_per_capita+continent+people_using_at_least_basic_drinking_water_services+co2_emissions+individuals_using_the_internet)
+summary(regression5)
+anova(regression5,regression4)
+```
+
+```{r}
+#regression 4 is the best model right now
+regression4<-lm(data=Life,life_expectancy~gdp_per_capita+least_developed+continent+people_using_at_least_basic_drinking_water_services+co2_emissions+individuals_using_the_internet+military_expenditure+beer_consumption_per_capita)
+summary(regression4)
+
+vif(regression4)
+```
+
+```{r}
+regression6<-lm(data=Life,life_expectancy~gdp_per_capita+least_developed+people_using_at_least_basic_drinking_water_services+co2_emissions+individuals_using_the_internet+military_expenditure+beer_consumption_per_capita)
+summary(regression6)
+```
+
+```{r}
+regression7<-lm(data=Life,life_expectancy~gdp_per_capita+least_developed+people_using_at_least_basic_drinking_water_services+co2_emissions+individuals_using_the_internet)
+summary(regression7)
+anova(regression7,regression4)
+#regression 4 is better
+```
+
+```{r}
+regression8<-lm(data=Life,life_expectancy~gdp_per_capita+least_developed+people_using_at_least_basic_drinking_water_services+co2_emissions+military_expenditure+beer_consumption_per_capita)
+summary(regression8)
+```
+
+
+```{r}
+Life_numeric<-Life|>
+  select(-continent,-least_developed,-country,-year)
+GGally::ggpairs(Life_numeric)
+```
+
+```{r}
+regression9<-lm(data=Life,life_expectancy~gdp_per_capita+least_developed+people_using_at_least_basic_drinking_water_services+co2_emissions+beer_consumption_per_capita+health_expenditure+people_practicing_open_defecation)
+summary(regression9)
+check_model(regression9, check = c("ncv","homogeneity","qq"))
+
+
+#regression 4 or regression9 (not nested, larger R-square for regression4, VIF better shown in regression9)
+```
 
