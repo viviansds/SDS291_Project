@@ -59,6 +59,15 @@ summary(regression4)
 vif(regression4)
 ```
 
+$$
+\begin{aligned}
+\widehat{Life\_Expectancy} &= \beta_{0} + \beta_{1}(\operatorname{gdp\_per\_capita}) + \beta_{2}(\operatorname{least\_developed})\ + \\
+&\quad \beta_{3}(\operatorname{continent}) + \beta_{4}(\operatorname{people\_using\_at\_least\_basic\_drinking\_water\_services}+ \\
+&\quad \beta_{5}(\operatorname{co2\_emissions})+\beta_{6}(\operatorname{individuals\_using\_the\_internet}) + \\
+&\quad \beta_{7}(\operatorname{military\_expenditure}) + \beta_{8}(\operatorname{beer\_consumption\_per\_capita})
+\end{aligned}
+$$
+
 ```{r}
 regression6<-lm(data=Life,life_expectancy~gdp_per_capita+least_developed+people_using_at_least_basic_drinking_water_services+co2_emissions+individuals_using_the_internet+military_expenditure+beer_consumption_per_capita)
 summary(regression6)
@@ -92,3 +101,11 @@ check_model(regression9, check = c("ncv","homogeneity","qq"))
 #regression 4 or regression9 (not nested, larger R-square for regression4, VIF better shown in regression9)
 ```
 
+$$
+\begin{aligned}
+\widehat{Life\_Expectancy} &= \beta_{0} + \beta_{1}(\operatorname{gdp\_per\_capita}) + \beta_{2}(\operatorname{least\_developed})\ + \\
+&\quad \beta_{3}(\operatorname{people\_using\_at\_least\_basic\_drinking\_water\_services}+ \\
+&\quad \beta_{4}(\operatorname{co2\_emissions})+\beta_{5}(\operatorname{beer\_consumption\_per\_capita}) + \\
+&\quad \beta_{6}(\operatorname{health\_expenditure}) + \beta_{7}(\operatorname{people\_practicing\_open\_defecation})
+\end{aligned}
+$$
