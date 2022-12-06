@@ -13,6 +13,7 @@ library(see)
 library(ggplot2)
 library(here)
 library(car)
+library(GGally)
 ```
 
 ```{r}
@@ -97,7 +98,6 @@ regression9<-lm(data=Life,life_expectancy~gdp_per_capita+least_developed+people_
 summary(regression9)
 check_model(regression9, check = c("ncv","homogeneity","qq"))
 
-
 #regression 4 or regression9 (not nested, larger R-square for regression4, VIF better shown in regression9)
 ```
 
@@ -109,3 +109,74 @@ $$
 &\quad \beta_{6}(\operatorname{health\_expenditure}) + \beta_{7}(\operatorname{people\_practicing\_open\_defecation})
 \end{aligned}
 $$
+# additive models:
+
+```{r}
+regression_a <- lm(data = Life, life_expectancy ~ people_using_at_least_basic_drinking_water_services + individuals_using_the_internet + gdp_per_capita + obesity_among_adults + people_practicing_open_defecation + electric_power_consumption + health_expenditure + co2_emissions + beer_consumption_per_capita + military_expenditure + population + forest_area + continent + least_developed)
+summary(regression_a)
+```
+
+Based on p-value in the regression table for each variables, it seems that obesity_among_adults, electric_power_consumption, health_expenditure,  beer_consumption_per_capita, population, and forest_area are not statistically significant to the regression model.  
+
+```{r}
+regression_b <- lm(data = Life, life_expectancy ~ people_using_at_least_basic_drinking_water_services + individuals_using_the_internet + gdp_per_capita + people_practicing_open_defecation + co2_emissions + military_expenditure + continent + least_developed)
+summary(regression_b)
+vif(regression_b)
+```
+
+p-value qualified, vif in danger: people_using_at_least_basic_drinking_water_services(5.3729), individuals_using_the_internet(7.6596)
+
+```{r}
+Life |>
+  select(people_using_at_least_basic_drinking_water_services, individuals_using_the_internet, gdp_per_capita, people_practicing_open_defecation, co2_emissions, military_expenditure, continent, least_developed) |>
+  ggpairs()
+```
+
+high correlation value: gdp_per_capita + individuals_using_the_internet (0.811), etc.
+
+Overall, we try to delete individuals_using_the_internet.
+
+```{r}
+regression_c <- lm(data = Life, life_expectancy ~ people_using_at_least_basic_drinking_water_services + gdp_per_capita + people_practicing_open_defecation + co2_emissions + military_expenditure + continent + least_developed)
+summary(regression_c)
+vif(regression_c)
+```
+
+p value for least_develope = 0.0654, removed
+VIFs are generally reasonable
+
+```{r}
+regression_d <- lm(data = Life, life_expectancy ~ people_using_at_least_basic_drinking_water_services + gdp_per_capita + people_practicing_open_defecation + co2_emissions + military_expenditure + continent)
+summary(regression_d)
+vif(regression_d)
+```
+
+approved.
+
+```{r}
+plot_check <- check_model(regression_d, check=c("linearity", "qq"))
+plot(plot_check, data=regression_d)
+```
+
+consumption checked
+
+# interaction models:
+
+```{r}
+Life |>
+  select(people_using_at_least_basic_drinking_water_services, gdp_per_capita, people_practicing_open_defecation, co2_emissions, military_expenditure, continent) |>
+  ggpairs()
+```
+
+strong relationship between: people_practicing_open_defecation and people_using_at_least_basic_drinking_water_services (-0.748), co2_emissions and gdp_per_capita (0.770), gdp_per_capita and people_using_at_least_basic_drinking_water_services (0.559)
+
+```{r}
+regression_e <- lm(data = Life, life_expectancy ~ people_using_at_least_basic_drinking_water_services * people_practicing_open_defecation + gdp_per_capita * co2_emissions + military_expenditure + continent)
+summary(regression_e)
+anova(regression_d, regression_e)
+```
+
+```{r}
+plot_check <- check_model(regression_e, check=c("linearity", "qq"))
+plot(plot_check, data=regression_e)
+```
