@@ -64,6 +64,7 @@ anova(additive5,additive4)
 interaction<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services *least_developed)
 summary(interaction)
 anova(additive4, interaction)
+check_model(additive4, check = c("ncv","homogeneity","qq"))
 
 interaction2<-lm(data = Life, life_expectancy ~ gdp_per_capita * least_developed+ health_expenditure + people_using_at_least_basic_drinking_water_services)
 summary(interaction2)
