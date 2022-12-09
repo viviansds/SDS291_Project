@@ -94,10 +94,10 @@ GGally::ggpairs(Life_numeric)
 ```
 
 ```{r}
-regression9<-lm(data=Life,life_expectancy~gdp_per_capita+least_developed+people_using_at_least_basic_drinking_water_services+co2_emissions+beer_consumption_per_capita+health_expenditure+people_practicing_open_defecation)
+regression9<-lm(data=Life,life_expectancy~gdp_per_capita+least_developed+people_using_at_least_basic_drinking_water_services+co2_emissions+health_expenditure+people_practicing_open_defecation)
 summary(regression9)
 check_model(regression9, check = c("ncv","homogeneity","qq"))
-
+vif(regression9)
 #regression 4 or regression9 (not nested, larger R-square for regression4, VIF better shown in regression9)
 ```
 
@@ -147,10 +147,15 @@ VIFs are generally reasonable
 
 ```{r}
 regression_d <- lm(data = Life, life_expectancy ~ people_using_at_least_basic_drinking_water_services + gdp_per_capita + people_practicing_open_defecation + co2_emissions + military_expenditure + continent)
+library(equatiomatic)
+extract_eq(regression_d)
+
 summary(regression_d)
 vif(regression_d)
 ```
-
+$$
+\operatorname{life\_expectancy} = \alpha + \beta_{1}(\operatorname{people\_using\_at\_least\_basic\_drinking\_water\_services})+ \beta_{2}(\operatorname{gdp\_per\_capita}) + \beta_{3}(\operatorname{people\_practicing\_open\_defecation}) + \beta_{4}(\operatorname{co2\_emissions}) + \beta_{5}(\operatorname{military\_\expenditure}) + \beta_{6}(\operatorname{continent}_{\operatorname{Asia}}) + \beta_{7}(\operatorname{continent}_{\operatorname{Europe}}) + \beta_{8}(\operatorname{continent}_{\operatorname{North\ America}}) + \beta_{9}(\operatorname{continent}_{\operatorname{Oceania}}) + \beta_{10}(\operatorname{continent}_{\operatorname{South\ America}}) + \epsilon
+$$
 approved.
 
 ```{r}
@@ -180,3 +185,10 @@ anova(regression_d, regression_e)
 plot_check <- check_model(regression_e, check=c("linearity", "qq"))
 plot(plot_check, data=regression_e)
 ```
+
+```{r}
+reg_continent<-lm(data=Life, life_Expectancy~continent)
+summary(reg_continent)
+```
+
+
