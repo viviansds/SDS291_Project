@@ -54,12 +54,15 @@ summary(additive2)
 additive3<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services )
 summary(additive3)
 
-additive4<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services +least_developed)
+additive4<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services +least_developed+continent)
 summary(additive4)
 check_model(additive4, check = c("ncv","homogeneity","qq"))
+vif(additive4)
 
+#just numeric variable
 additive5<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services)
 summary(additive5)
+check_model(additive5, check = c("ncv","homogeneity","qq"))
 anova(additive5,additive4)
 
 interaction1<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services *least_developed)
@@ -76,5 +79,61 @@ check_model(interaction2, check = c("ncv","homogeneity","qq"))
 #high vif and insignificant interaction term
 #both interaction is not good 
 
+```
+
+```{r}
+library(tidyverse)
+library(emmeans)
+```
+
+```{r}
+continents_health<-lm(data=Life,life_expectancy~continent + health_expenditure)
+summary(continents_health)
+#africa is the baseline group
+
+continents_gdp<-lm(data=Life,life_expectancy~continent + gdp_per_capita)
+summary(continents_gdp)
+
+continents_drinking<-lm(data=Life,life_expectancy~continent + people_using_at_least_basic_drinking_water_services )
+summary(continents_drinking)
+```
+
+```{r}
+
+mean_health_expenditure=mean(Life$health_expenditure)
+health_grid<- emmeans(continents_health, specs = ~ continent,at =mean_health_expenditure)
+contrast(health_grid, method = "pairwise")
+
+mean_gdp=mean(Life$gdp_per_capita)
+gdp_grid<- emmeans(continents_gdp, specs = ~ continent,at =mean_gdp)
+contrast(gdp_grid, method = "pairwise")
+
+mean_drinking=mean(Life$people_using_at_least_basic_drinking_water_services)
+drinking_grid<- emmeans(continents_drinking, specs = ~ continent,at =mean_drinking)
+contrast(drinking_grid, method = "pairwise")
+
+```
+
+```{r}
+developed_health<-lm(data=Life,life_expectancy~least_developed + health_expenditure)
+summary(developed_health)
+#africa is the baseline group
+
+developed_gdp<-lm(data=Life,life_expectancy~least_developed + gdp_per_capita)
+summary(developed_gdp)
+
+developed_drinking<-lm(data=Life,life_expectancy~least_developed + people_using_at_least_basic_drinking_water_services )
+summary(developed_drinking)
+```
+
+```{r}
+developed_health_grid<- emmeans(developed_health, specs = ~ least_developed,at =mean_health_expenditure)
+contrast(developed_health_grid, method = "pairwise")
+
+developed_gdp_grid<- emmeans(developed_gdp, specs = ~ least_developed,at =mean_gdp)
+contrast(developed_gdp_grid, method = "pairwise")
+
+developed_drinking_grid<- emmeans(developed_drinking, specs = ~ least_developed,at =mean_drinking)
+contrast(developed_drinking_grid, method = "pairwise")
 ```
 
