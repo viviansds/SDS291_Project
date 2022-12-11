@@ -53,24 +53,33 @@ summary(additive2)
 
 additive3<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services )
 summary(additive3)
+```
 
+```{r}
+additive_w_continent<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services+continent)
+summary(additive_w_continent)
 
+additive_w_least_developed<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services+least_developed)
+```
+
+```{r}
 #just numeric variable
 additive5<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services)
 summary(additive5)
 check_model(additive5, check = c("ncv","homogeneity","qq"))
-anova(additive5,additive4)
+```
 
+```{r}
 interaction1<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services *least_developed)
 summary(interaction1)
-anova(additive4, interaction1)
+anova(interaction1,additive_w_least_developed)
 check_model(interaction1, check = c("ncv","homogeneity","qq"))
 vif(interaction1) 
 #high vif
 interaction2<-lm(data = Life, life_expectancy ~ gdp_per_capita * least_developed+ health_expenditure + people_using_at_least_basic_drinking_water_services)
 summary(interaction2)
 vif(interaction2)
-anova(additive4, interaction2)
+anova(interaction2,additive_w_least_developed)
 check_model(interaction2, check = c("ncv","homogeneity","qq"))
 #high vif and insignificant interaction term
 #both interaction is not good 
