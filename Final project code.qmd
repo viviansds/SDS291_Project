@@ -92,6 +92,14 @@ library(emmeans)
 ```
 Final Regression and contrast
 ```{r}
+mean_drinking=mean(Life$people_using_at_least_basic_drinking_water_services)
+mean_health_expenditure=mean(Life$health_expenditure)
+mean_gdp=mean(Life$gdp_per_capita)
+# Life<-Life|>mutate(gdp_c=gdp_per_capita-mean(Life$gdp_per_capita),
+#              health_c=health_expenditure-mean(Life$health_expenditure),
+#              drinking_c=people_using_at_least_basic_drinking_water_services-mean(Life$people_using_at_least_basic_drinking_water_services))
+
+
 additive_w_continent<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services+continent)
 summary(additive_w_continent)
 check_model(additive_w_continent, check = c("ncv","homogeneity","qq"))
@@ -100,7 +108,7 @@ vif(additive_w_continent)
 
 ```{r}
 ##This contrast fix all three at once
-continent_grid <- emmeans(additive4, specs = ~continent,
+continent_grid <- emmeans(additive_w_continent, specs = ~continent,
                  at = list(drinking = mean_drinking, 
                            health = mean_health_expenditure,
                            gdp = mean_gdp
