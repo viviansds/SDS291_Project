@@ -50,17 +50,6 @@ additive<-lm(data = Life, life_expectancy ~ gdp_per_capita + health_expenditure 
 summary(additive)
 ```
 
-```{r, echo = FALSE, message=FALSE}
-models <- list("additive" = additive,
-               "additive_w_least_developed" = additive_w_least_developed,
-               "additive_w_continent" = additive_w_continent)
-options(modelsummary_format_numeric_latex = "plain")
-    modelsummary(models,
-                 estimate="{estimate}{stars}",
-                 notes = list('+ p < 0.1, * p < 0.05, ** p < 0.01, *** p < 0.001')
-                 )
-```
-
 
 $$
 \begin{aligned}
@@ -95,6 +84,17 @@ summary(additive_w_least_developed)
 check_model(additive_w_least_developed, check = c("ncv","homogeneity","qq"))
 vif(additive_w_least_developed)
 anova(additive, additive_w_least_developed)
+```
+Model Summary
+```{r, echo = FALSE, message=FALSE}
+models <- list("additive" = additive,
+               "additive_w_least_developed" = additive_w_least_developed,
+               "additive_w_continent" = additive_w_continent)
+options(modelsummary_format_numeric_latex = "plain")
+    modelsummary(models,
+                 estimate="{estimate}{stars}",
+                 notes = list('+ p < 0.1, * p < 0.05, ** p < 0.01, *** p < 0.001')
+                 )
 ```
 
 ```{r, echo = FALSE, message=FALSE}
