@@ -194,6 +194,7 @@ lgl  (1): Least Developed
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Life<span class="ot">&lt;-</span><span class="fu">clean_names</span>(Life_Expectancy)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>Life<span class="ot">&lt;-</span>Life<span class="sc">|&gt;</span><span class="fu">filter</span>(year<span class="sc">==</span><span class="dv">2015</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Process to derive final regression-bivariate regression</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>gdp_reg<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data=</span>Life,life_expectancy<span class="sc">~</span>gdp_per_capita)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gdp_reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -314,6 +315,7 @@ Multiple R-squared:  0.4516,    Adjusted R-squared:  0.4469
 F-statistic: 96.36 on 1 and 117 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
+<p>Process to derive final regression-additive and interaction regression</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>additive<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">+</span> health_expenditure <span class="sc">+</span> co2_emissions <span class="sc">+</span> people_using_at_least_basic_drinking_water_services <span class="sc">+</span> people_practicing_open_defecation )</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(additive)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -413,45 +415,55 @@ Residual standard error: 3.326 on 115 degrees of freedom
 Multiple R-squared:  0.7795,    Adjusted R-squared:  0.7738 
 F-statistic: 135.5 on 3 and 115 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>additive4<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services <span class="sc">+</span>least_developed)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(additive4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>additive_w_continent<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services<span class="sc">+</span>continent)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(additive_w_continent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
 lm(formula = life_expectancy ~ gdp_per_capita + health_expenditure + 
-    people_using_at_least_basic_drinking_water_services + least_developed, 
+    people_using_at_least_basic_drinking_water_services + continent, 
     data = Life)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--11.377  -1.581   0.087   2.207   8.152 
+   Min     1Q Median     3Q    Max 
+-9.888 -1.593 -0.002  1.683  9.230 
 
 Coefficients:
                                                      Estimate Std. Error
-(Intercept)                                         3.771e+01  3.206e+00
-gdp_per_capita                                      1.001e-04  1.900e-05
-health_expenditure                                  5.492e-01  1.342e-01
-people_using_at_least_basic_drinking_water_services 3.277e-01  3.616e-02
-least_developedTRUE                                 3.128e+00  1.390e+00
+(Intercept)                                         4.843e+01  2.122e+00
+gdp_per_capita                                      9.299e-05  1.862e-05
+health_expenditure                                  4.058e-01  1.436e-01
+people_using_at_least_basic_drinking_water_services 1.833e-01  2.893e-02
+continentAsia                                       3.968e+00  9.663e-01
+continentEurope                                     5.502e+00  1.098e+00
+continentNorth America                              4.875e+00  1.271e+00
+continentOceania                                    7.496e+00  2.399e+00
+continentSouth America                              4.917e+00  1.311e+00
                                                     t value Pr(&gt;|t|)    
-(Intercept)                                          11.764  &lt; 2e-16 ***
-gdp_per_capita                                        5.269 6.55e-07 ***
-health_expenditure                                    4.091 8.05e-05 ***
-people_using_at_least_basic_drinking_water_services   9.063 4.20e-15 ***
-least_developedTRUE                                   2.250   0.0264 *  
+(Intercept)                                          22.822  &lt; 2e-16 ***
+gdp_per_capita                                        4.994 2.24e-06 ***
+health_expenditure                                    2.825 0.005608 ** 
+people_using_at_least_basic_drinking_water_services   6.338 5.25e-09 ***
+continentAsia                                         4.107 7.75e-05 ***
+continentEurope                                       5.012 2.08e-06 ***
+continentNorth America                                3.835 0.000210 ***
+continentOceania                                      3.125 0.002276 ** 
+continentSouth America                                3.752 0.000282 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 3.269 on 114 degrees of freedom
-Multiple R-squared:  0.7889,    Adjusted R-squared:  0.7815 
-F-statistic: 106.5 on 4 and 114 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 3.027 on 110 degrees of freedom
+Multiple R-squared:  0.8254,    Adjusted R-squared:  0.8127 
+F-statistic:    65 on 8 and 110 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(additive4, <span class="at">check =</span> <span class="fu">c</span>(<span class="st">"ncv"</span>,<span class="st">"homogeneity"</span>,<span class="st">"qq"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Final-project-code_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>additive_w_least_developed<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services<span class="sc">+</span>least_developed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>additive5<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(additive5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#just numeric variable</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>additive5<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(additive5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -480,21 +492,14 @@ Residual standard error: 3.326 on 115 degrees of freedom
 Multiple R-squared:  0.7795,    Adjusted R-squared:  0.7738 
 F-statistic: 135.5 on 3 and 115 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(additive5,additive4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Analysis of Variance Table
-
-Model 1: life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services
-Model 2: life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services + 
-    least_developed
-  Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  
-1    115 1272.3                              
-2    114 1218.2  1    54.089 5.0616 0.02638 *
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(additive5, <span class="at">check =</span> <span class="fu">c</span>(<span class="st">"ncv"</span>,<span class="st">"homogeneity"</span>,<span class="st">"qq"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Final-project-code_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>interaction1<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services <span class="sc">*</span>least_developed)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(interaction1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>interaction1<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services <span class="sc">*</span>least_developed)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(interaction1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -549,25 +554,25 @@ Residual standard error: 3.118 on 113 degrees of freedom
 Multiple R-squared:  0.8096,    Adjusted R-squared:  0.8012 
 F-statistic: 96.12 on 5 and 113 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(additive4, interaction1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(interaction1,additive_w_least_developed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
-Model 1: life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services + 
+Model 1: life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services * 
     least_developed
-Model 2: life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services * 
+Model 2: life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services + 
     least_developed
   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
-1    114 1218.2                                  
-2    113 1098.6  1    119.63 12.305 0.0006493 ***
+1    113 1098.6                                  
+2    114 1218.2 -1   -119.63 12.305 0.0006493 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(interaction1, <span class="at">check =</span> <span class="fu">c</span>(<span class="st">"ncv"</span>,<span class="st">"homogeneity"</span>,<span class="st">"qq"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(interaction1, <span class="at">check =</span> <span class="fu">c</span>(<span class="st">"ncv"</span>,<span class="st">"homogeneity"</span>,<span class="st">"qq"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Final-project-code_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
+<p><img src="Final-project-code_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(interaction1) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(interaction1) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>there are higher-order terms (interactions) in this model
 consider setting type = 'predictor'; see ?vif</code></pre>
@@ -584,9 +589,9 @@ consider setting type = 'predictor'; see ?vif</code></pre>
 people_using_at_least_basic_drinking_water_services:least_developed 
                                                           27.980547 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">#high vif</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>interaction2<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">*</span> least_developed<span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services)</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(interaction2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#high vif</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>interaction2<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">*</span> least_developed<span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(interaction2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -620,7 +625,7 @@ Residual standard error: 3.262 on 113 degrees of freedom
 Multiple R-squared:  0.7916,    Adjusted R-squared:  0.7824 
 F-statistic: 85.86 on 5 and 113 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(interaction2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(interaction2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>there are higher-order terms (interactions) in this model
 consider setting type = 'predictor'; see ?vif</code></pre>
@@ -637,24 +642,225 @@ people_using_at_least_basic_drinking_water_services
                      gdp_per_capita:least_developed 
                                            3.847824 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(additive4, interaction2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(interaction2,additive_w_least_developed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
-Model 1: life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services + 
-    least_developed
-Model 2: life_expectancy ~ gdp_per_capita * least_developed + health_expenditure + 
+Model 1: life_expectancy ~ gdp_per_capita * least_developed + health_expenditure + 
     people_using_at_least_basic_drinking_water_services
+Model 2: life_expectancy ~ gdp_per_capita + health_expenditure + people_using_at_least_basic_drinking_water_services + 
+    least_developed
   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
-1    114 1218.2                           
-2    113 1202.5  1    15.695 1.4749 0.2271</code></pre>
+1    113 1202.5                           
+2    114 1218.2 -1   -15.695 1.4749 0.2271</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(interaction2, <span class="at">check =</span> <span class="fu">c</span>(<span class="st">"ncv"</span>,<span class="st">"homogeneity"</span>,<span class="st">"qq"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(interaction2, <span class="at">check =</span> <span class="fu">c</span>(<span class="st">"ncv"</span>,<span class="st">"homogeneity"</span>,<span class="st">"qq"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Final-project-code_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid" width="672"></p>
+<p><img src="Final-project-code_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co">#high vif and insignificant interaction term</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co">#both interaction is not good </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#high vif and insignificant interaction term</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="co">#both interaction is not good </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+✔ tibble  3.1.8     ✔ stringr 1.4.1
+✔ tidyr   1.2.1     ✔ forcats 0.5.2
+✔ purrr   0.3.5     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+✖ car::recode()   masks dplyr::recode()
+✖ purrr::some()   masks car::some()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'emmeans'
+
+The following object is masked from 'package:GGally':
+
+    pigs</code></pre>
+</div>
+</div>
+<p>Final Regression and contrast</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>mean_drinking<span class="ot">=</span><span class="fu">mean</span>(Life<span class="sc">$</span>people_using_at_least_basic_drinking_water_services)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>mean_health_expenditure<span class="ot">=</span><span class="fu">mean</span>(Life<span class="sc">$</span>health_expenditure)</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>mean_gdp<span class="ot">=</span><span class="fu">mean</span>(Life<span class="sc">$</span>gdp_per_capita)</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Life&lt;-Life|&gt;mutate(gdp_c=gdp_per_capita-mean(Life$gdp_per_capita),</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="co">#              health_c=health_expenditure-mean(Life$health_expenditure),</span></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="co">#              drinking_c=people_using_at_least_basic_drinking_water_services-mean(Life$people_using_at_least_basic_drinking_water_services))</span></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>additive_w_continent<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services<span class="sc">+</span>continent)</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(additive_w_continent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = life_expectancy ~ gdp_per_capita + health_expenditure + 
+    people_using_at_least_basic_drinking_water_services + continent, 
+    data = Life)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-9.888 -1.593 -0.002  1.683  9.230 
+
+Coefficients:
+                                                     Estimate Std. Error
+(Intercept)                                         4.843e+01  2.122e+00
+gdp_per_capita                                      9.299e-05  1.862e-05
+health_expenditure                                  4.058e-01  1.436e-01
+people_using_at_least_basic_drinking_water_services 1.833e-01  2.893e-02
+continentAsia                                       3.968e+00  9.663e-01
+continentEurope                                     5.502e+00  1.098e+00
+continentNorth America                              4.875e+00  1.271e+00
+continentOceania                                    7.496e+00  2.399e+00
+continentSouth America                              4.917e+00  1.311e+00
+                                                    t value Pr(&gt;|t|)    
+(Intercept)                                          22.822  &lt; 2e-16 ***
+gdp_per_capita                                        4.994 2.24e-06 ***
+health_expenditure                                    2.825 0.005608 ** 
+people_using_at_least_basic_drinking_water_services   6.338 5.25e-09 ***
+continentAsia                                         4.107 7.75e-05 ***
+continentEurope                                       5.012 2.08e-06 ***
+continentNorth America                                3.835 0.000210 ***
+continentOceania                                      3.125 0.002276 ** 
+continentSouth America                                3.752 0.000282 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.027 on 110 degrees of freedom
+Multiple R-squared:  0.8254,    Adjusted R-squared:  0.8127 
+F-statistic:    65 on 8 and 110 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(additive_w_continent, <span class="at">check =</span> <span class="fu">c</span>(<span class="st">"ncv"</span>,<span class="st">"homogeneity"</span>,<span class="st">"qq"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Final-project-code_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(additive_w_continent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                        GVIF Df GVIF^(1/(2*Df))
+gdp_per_capita                                      1.714566  1        1.309414
+health_expenditure                                  1.690834  1        1.300321
+people_using_at_least_basic_drinking_water_services 2.391250  1        1.546367
+continent                                           3.139970  5        1.121224</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="do">##This contrast fix all three at once</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>continent_grid <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(additive_w_continent, <span class="at">specs =</span> <span class="sc">~</span>continent,</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">at =</span> <span class="fu">list</span>(<span class="at">drinking =</span> mean_drinking, </span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">health =</span> mean_health_expenditure,</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">gdp =</span> mean_gdp</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>                           )</span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a><span class="fu">contrast</span>(continent_grid, <span class="at">method =</span> <span class="st">"pairwise"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> contrast                      estimate    SE  df t.ratio p.value
+ Africa - Asia                  -3.9681 0.966 110  -4.107  0.0011
+ Africa - Europe                -5.5022 1.098 110  -5.012  &lt;.0001
+ Africa - North America         -4.8755 1.271 110  -3.835  0.0028
+ Africa - Oceania               -7.4961 2.399 110  -3.125  0.0269
+ Africa - South America         -4.9169 1.311 110  -3.752  0.0037
+ Asia - Europe                  -1.5341 0.886 110  -1.732  0.5138
+ Asia - North America           -0.9074 1.156 110  -0.785  0.9696
+ Asia - Oceania                 -3.5280 2.309 110  -1.528  0.6472
+ Asia - South America           -0.9488 1.180 110  -0.804  0.9662
+ Europe - North America          0.6267 1.067 110   0.587  0.9917
+ Europe - Oceania               -1.9939 2.204 110  -0.905  0.9445
+ Europe - South America          0.5853 1.131 110   0.517  0.9954
+ North America - Oceania        -2.6206 2.358 110  -1.111  0.8758
+ North America - South America  -0.0414 1.329 110  -0.031  1.0000
+ Oceania - South America         2.5792 2.397 110   1.076  0.8899
+
+P value adjustment: tukey method for comparing a family of 6 estimates </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>additive_w_least_developed<span class="ot">&lt;-</span><span class="fu">lm</span>(<span class="at">data =</span> Life, life_expectancy <span class="sc">~</span> gdp_per_capita <span class="sc">+</span> health_expenditure <span class="sc">+</span> people_using_at_least_basic_drinking_water_services<span class="sc">+</span>least_developed)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(additive_w_least_developed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = life_expectancy ~ gdp_per_capita + health_expenditure + 
+    people_using_at_least_basic_drinking_water_services + least_developed, 
+    data = Life)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-11.377  -1.581   0.087   2.207   8.152 
+
+Coefficients:
+                                                     Estimate Std. Error
+(Intercept)                                         3.771e+01  3.206e+00
+gdp_per_capita                                      1.001e-04  1.900e-05
+health_expenditure                                  5.492e-01  1.342e-01
+people_using_at_least_basic_drinking_water_services 3.277e-01  3.616e-02
+least_developedTRUE                                 3.128e+00  1.390e+00
+                                                    t value Pr(&gt;|t|)    
+(Intercept)                                          11.764  &lt; 2e-16 ***
+gdp_per_capita                                        5.269 6.55e-07 ***
+health_expenditure                                    4.091 8.05e-05 ***
+people_using_at_least_basic_drinking_water_services   9.063 4.20e-15 ***
+least_developedTRUE                                   2.250   0.0264 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.269 on 114 degrees of freedom
+Multiple R-squared:  0.7889,    Adjusted R-squared:  0.7815 
+F-statistic: 106.5 on 4 and 114 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(additive_w_least_developed, <span class="at">check =</span> <span class="fu">c</span>(<span class="st">"ncv"</span>,<span class="st">"homogeneity"</span>,<span class="st">"qq"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Final-project-code_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(additive_w_least_developed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                     gdp_per_capita 
+                                           1.531034 
+                                 health_expenditure 
+                                           1.266347 
+people_using_at_least_basic_drinking_water_services 
+                                           3.203617 
+                                    least_developed 
+                                           2.504681 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>least_developed_grid <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(additive_w_least_developed, <span class="at">specs =</span> <span class="sc">~</span>least_developed,</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">at =</span> <span class="fu">list</span>(<span class="at">drinking =</span> mean_drinking, </span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">health =</span> mean_health_expenditure,</span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">gdp =</span> mean_gdp</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>                           )</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="fu">contrast</span>(least_developed_grid, <span class="at">method =</span> <span class="st">"pairwise"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> contrast     estimate   SE  df t.ratio p.value
+ FALSE - TRUE    -3.13 1.39 114  -2.250  0.0264</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># developed_health&lt;-lm(data=Life,life_expectancy~least_developed + health_expenditure)</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(developed_health)</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="co"># #africa is the baseline group</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="co"># developed_gdp&lt;-lm(data=Life,life_expectancy~least_developed + gdp_per_capita)</span></span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(developed_gdp)</span></span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a><span class="co"># developed_drinking&lt;-lm(data=Life,life_expectancy~least_developed + people_using_at_least_basic_drinking_water_services )</span></span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(developed_drinking)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># developed_health_grid&lt;- emmeans(developed_health, specs = ~ least_developed,at =mean_health_expenditure)</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="co"># contrast(developed_health_grid, method = "pairwise")</span></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a><span class="co"># developed_gdp_grid&lt;- emmeans(developed_gdp, specs = ~ least_developed,at =mean_gdp)</span></span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="co"># contrast(developed_gdp_grid, method = "pairwise")</span></span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a><span class="co"># developed_drinking_grid&lt;- emmeans(developed_drinking, specs = ~ least_developed,at =mean_drinking)</span></span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a><span class="co"># contrast(developed_drinking_grid, method = "pairwise")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </main>

@@ -33,9 +33,6 @@ summary(health_reg)
 co2_reg <- lm(data = Life, life_expectancy ~ co2_emissions)
 summary(co2_reg)
 
-# military_reg <- lm(data = Life, life_expectancy ~ military_expenditure)
-# summary(military_reg)
-
 water_reg <- lm(data=Life, life_expectancy ~ people_using_at_least_basic_drinking_water_services)
 summary(water_reg)
 

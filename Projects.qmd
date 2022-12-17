@@ -33,7 +33,6 @@ check_model(regression1, check = c("ncv","homogeneity","qq"))
 ```{r}
 regression2<-lm(data=Life,life_expectancy~people_using_at_least_basic_drinking_water_services)
 summary(regression2)
-
 ```
 
 ```{r}
